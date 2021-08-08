@@ -11,13 +11,13 @@ Game: VRChat (2021.3.2  [build 1121])
 
 ### MelonPreferences (Default Values)
 ```ini
-[NotOptifine]
-hideReticleWhileZoomed = true
-enableZoom = true
-FOV = 60
-FOVChangedAmount = 1
-zoomMultiplier = 6
-zoomKeybind = "LeftAlt"
+[DesktopFOV]
+DefaultFOV = 60
+FOVChangeAmount = 5
+ZoomMultiplier = 6
+HideReticleWhenZoomed = true
+EnableZoom = true
+ZoomKeybind = "LeftAlt"
 ```
 
 # Credits
