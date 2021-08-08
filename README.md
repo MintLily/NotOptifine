@@ -1,5 +1,5 @@
 # NotOptifine
-DesktopFOV continuation, looks like is has features like Minecraft's Optifine, just not with the performance features.
+DesktopFOV continuation; looks like it has features like Minecraft's Optifine, just not with the performance features.
 
 ### MelonLoader
 Need to install MelonLoader?<br>

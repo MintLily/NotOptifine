@@ -18,7 +18,7 @@ namespace NotOptifine
         public const string Company = null;
         public const string Version = "1.2.0";
         public const string DownloadLink = "https://github.com/MintLily/NotOptifine";
-        public const string Description = "DesktopFOV continuation, looks like is has features like Minecraft's Optifine, just not with the performance features.";
+        public const string Description = "DesktopFOV continuation looks like it has features like Minecraft's Optifine, just not with the performance features.";
     }
 
     internal class Main : MelonMod
