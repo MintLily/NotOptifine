@@ -7,7 +7,7 @@ Click [this link](https://melonwiki.xyz/) to get started!
 
 ### Prerequisites
 MelonLoader: v0.4.3 (Alpha)<br>
-Game: VRChat (2021.3.2  [build 1121])
+Game: VRChat (2021.3.3  [build 1128])
 
 ### MelonPreferences (Default Values)
 ```ini
@@ -17,7 +17,8 @@ FOVChangeAmount = 5
 ZoomMultiplier = 6
 HideReticleWhenZoomed = true
 EnableZoom = true
-ZoomKeybind = "LeftAlt"
+ZoomKeybind = "X"
+disableCTRLZoom = false
 ```
 
 # Credits
@@ -26,6 +27,10 @@ ZoomKeybind = "LeftAlt"
 
 
 # Change Log (since Lily's edits)
+### v1.3.0
+* Added an option to disable CONTROL zooming functions
+* Changed Default ZoomKeybind to "X"
+
 ### v1.2.0
 * Updated Mod to Support VRChat build 1121 (Unity 2019 Update)
 * Changed name to funny

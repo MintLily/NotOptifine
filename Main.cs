@@ -16,7 +16,7 @@ namespace NotOptifine
         public const string Name = "NotOptifine";
         public const string Author = "Moons, Lily";
         public const string Company = null;
-        public const string Version = "1.2.0";
+        public const string Version = "1.3.0";
         public const string DownloadLink = "https://github.com/MintLily/NotOptifine";
         public const string Description = "DesktopFOV continuation; looks like it has features like Minecraft's Optifine, just not with the performance features.";
     }
@@ -25,7 +25,7 @@ namespace NotOptifine
     {
         MelonMod Instance;
         MelonPreferences_Category melon;
-        internal MelonPreferences_Entry<bool> hideReticleWhileZoomed, enableZoom;
+        internal MelonPreferences_Entry<bool> hideReticleWhileZoomed, enableZoom, disableCTRLZoom;
         internal MelonPreferences_Entry<float> FOV, FOVChangedAmount, zoomMultiplier;
         internal static MelonPreferences_Entry<string> zoomKeybind;
         bool isZoomed;
@@ -51,10 +51,11 @@ namespace NotOptifine
             zoomMultiplier = melon.CreateEntry("ZoomMultiplier", 6f, "Zoom Multiplier");
             hideReticleWhileZoomed = melon.CreateEntry("HideReticleWhenZoomed", true, "Hide Reticle While Zoomed?");
             enableZoom = melon.CreateEntry("EnableZoom", true, "Enable Zoom Feature");
-            zoomKeybind = melon.CreateEntry("ZoomKeybind", "LeftAlt", "Zoom Keybind");
+            zoomKeybind = melon.CreateEntry("ZoomKeybind", "X", "Zoom Keybind");
+            disableCTRLZoom = melon.CreateEntry("disableCTRLZoom", false, "Disable CTRL Zoom Feature");
 
             MelonLogger.Msg("Settings can be configured in UserData\\MelonPreferences.cfg or with UI Expansion Kit");
-            MelonLogger.Msg("[Ctrl + ScrollWheel] -> Increase or decrease field of view");
+            MelonLogger.Msg($"[Ctrl + ScrollWheel] -> {(disableCTRLZoom.Value ? "Function Disabled" : "Increase or decrease field of view")}");
             MelonLogger.Msg("[Ctrl + ClickMiddleMouse] -> Reset field of view");
             zKey = Utils.GetParseZoomKeybind();
             if (enableZoom.Value) MelonLogger.Msg($"[{zoomKeybind.Value}] -> Zoom");
@@ -98,9 +99,11 @@ namespace NotOptifine
             }
 
             // Log FOV change
-            if ((Utils.GetKeyUp(KeyCode.LeftControl) || Utils.GetKeyUp(KeyCode.RightControl)) && !isZoomed && lastFOV != FOV.Value) {
-                MelonLogger.Msg($"FOV Changed: {FOV.Value}");
-                lastFOV = FOV.Value;
+            if (!disableCTRLZoom.Value) {
+                if ((Utils.GetKeyUp(KeyCode.LeftControl) || Utils.GetKeyUp(KeyCode.RightControl)) && !isZoomed && lastFOV != FOV.Value) {
+                    MelonLogger.Msg($"FOV Changed: {FOV.Value}");
+                    lastFOV = FOV.Value;
+                }
             }
 
             Camera.main.fieldOfView = FOV.Value;
