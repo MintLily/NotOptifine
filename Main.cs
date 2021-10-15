@@ -23,17 +23,17 @@ namespace NotOptifine
 
     internal class Main : MelonMod
     {
-        MelonMod Instance;
-        MelonPreferences_Category melon;
+        private MelonMod Instance;
+        private MelonPreferences_Category melon;
         internal MelonPreferences_Entry<bool> hideReticleWhileZoomed, enableZoom, disableCTRLZoom;
         internal MelonPreferences_Entry<float> FOV, FOVChangedAmount, zoomMultiplier;
         internal static MelonPreferences_Entry<string> zoomKeybind;
-        bool isZoomed;
-        float preZoom = 60f, lastFOV;
-        KeyCode zKey = KeyCode.LeftAlt;
-        GameObject ReticleObj;
+        private bool isZoomed, _isInVr;
+        private float preZoom = 60f, lastFOV;
+        private KeyCode zKey = KeyCode.LeftAlt;
+        private GameObject ReticleObj;
 
-        public GameObject Reticle
+        private GameObject Reticle
         {
             get {
                 if (ReticleObj == null) ReticleObj = GameObject.Find("UserInterface/UnscaledUI/HudContent/Hud/ReticleParent");
@@ -59,6 +59,14 @@ namespace NotOptifine
             MelonLogger.Msg("[Ctrl + ClickMiddleMouse] -> Reset field of view");
             zKey = Utils.GetParseZoomKeybind();
             if (enableZoom.Value) MelonLogger.Msg($"[{zoomKeybind.Value}] -> Zoom");
+            MelonCoroutines.Start(WaitForApiPlayer());
+        }
+
+        private IEnumerator WaitForApiPlayer()
+        {
+            while (Player.prop_Player_0 == null || Player.prop_Player_0.prop_VRCPlayerApi_0 == null)
+                yield return new WaitForSeconds(0.1F);
+            _isInVr = Utils.IsInVR;
         }
         
 
@@ -66,15 +74,16 @@ namespace NotOptifine
 
         public override void OnUpdate() => LoopEveryFrame_CuzThatsWhatOnUpdateMeans_ForVRChat_NotMinecraft_ThisIsNotOptifine(); // Sorry, just wanted funny name
 
-        internal void LoopEveryFrame_CuzThatsWhatOnUpdateMeans_ForVRChat_NotMinecraft_ThisIsNotOptifine()
+        private void LoopEveryFrame_CuzThatsWhatOnUpdateMeans_ForVRChat_NotMinecraft_ThisIsNotOptifine()
         {
+            if(_isInVr) return;
             if (Utils.GetVRCPlayer() == null) return;
             if (!Application.isFocused && isZoomed) {
                 isZoomed = false;
                 FOV.Value = preZoom;
                 Reticle.SetActive(true);
             }
-
+            
             // FOV Up
             if (Utils.GetAxis("Mouse ScrollWheel", true) < 0f)
                 FOV.Value += FOVChangedAmount.Value;

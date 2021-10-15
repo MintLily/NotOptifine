@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using MelonLoader;
 using UnityEngine;
+using VRC;
 
 namespace NotOptifine
 {
@@ -75,5 +77,24 @@ namespace NotOptifine
 				return Input.GetAxis(axis);
 			return 0f;
 		}
-	}
+
+		public static bool IsInVR
+		{
+			get
+			{
+				bool result;
+				try
+				{
+					result = Player.prop_Player_0.prop_VRCPlayerApi_0.IsUserInVR();
+				}
+				catch
+				{
+					result = Environment.GetCommandLineArgs().All(args =>
+						!args.Equals("--no-vr", StringComparison.OrdinalIgnoreCase));
+				}
+
+				return result;
+			}
+		}
+    }
 }
