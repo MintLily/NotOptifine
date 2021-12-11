@@ -6,8 +6,8 @@ Need to install MelonLoader?<br>
 Click [this link](https://melonwiki.xyz/) to get started!
 
 ### Prerequisites
-MelonLoader: v0.4.3 (Alpha)<br>
-Game: VRChat (2021.3.3  [build 1128])
+MelonLoader: v0.5.2 (Alpha)<br>
+Game: VRChat build 1160+
 
 ### MelonPreferences (Default Values)
 ```ini
@@ -27,6 +27,9 @@ disableCTRLZoom = false
 
 
 # Change Log (since Lily's edits)
+### v1.4.0
+- Added HUDVoiceIcon toggle to OnZoom
+
 ### v1.3.0
 * Added an option to disable CONTROL zooming functions
 * Changed Default ZoomKeybind to "X"
@@ -34,6 +37,3 @@ disableCTRLZoom = false
 ### v1.2.0
 * Updated Mod to Support VRChat build 1121 (Unity 2019 Update)
 * Changed name to funny
-
-## Stay Updated
-Stay update to date with all my mods by joining my [discord server](https://discord.gg/qkycuAMUGS) today.
