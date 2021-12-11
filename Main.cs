@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using MelonLoader;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.XR;
 using VRC;
 
@@ -16,7 +17,7 @@ namespace NotOptifine
         public const string Name = "NotOptifine";
         public const string Author = "Moons, Lily";
         public const string Company = null;
-        public const string Version = "1.3.0";
+        public const string Version = "1.4.0";
         public const string DownloadLink = "https://github.com/MintLily/NotOptifine";
         public const string Description = "DesktopFOV continuation; looks like it has features like Minecraft's Optifine, just not with the performance features.";
     }
@@ -31,13 +32,20 @@ namespace NotOptifine
         bool isZoomed;
         float preZoom = 60f, lastFOV;
         KeyCode zKey = KeyCode.LeftAlt;
-        GameObject ReticleObj;
+        GameObject ReticleObj, HUDVoiceIcon;
 
         public GameObject Reticle
         {
             get {
                 if (ReticleObj == null) ReticleObj = GameObject.Find("UserInterface/UnscaledUI/HudContent/Hud/ReticleParent");
                 return ReticleObj;
+            }
+        }
+
+        public GameObject HUDIcon {
+            get {
+                if (HUDVoiceIcon == null) HUDVoiceIcon = GameObject.Find("UserInterface/UnscaledUI/HudContent/Hud/VoiceDotParent");
+                return HUDVoiceIcon;
             }
         }
 
@@ -54,11 +62,11 @@ namespace NotOptifine
             zoomKeybind = melon.CreateEntry("ZoomKeybind", "X", "Zoom Keybind");
             disableCTRLZoom = melon.CreateEntry("disableCTRLZoom", false, "Disable CTRL Zoom Feature");
 
-            MelonLogger.Msg("Settings can be configured in UserData\\MelonPreferences.cfg or with UI Expansion Kit");
-            MelonLogger.Msg($"[Ctrl + ScrollWheel] -> {(disableCTRLZoom.Value ? "Function Disabled" : "Increase or decrease field of view")}");
-            MelonLogger.Msg("[Ctrl + ClickMiddleMouse] -> Reset field of view");
+            LoggerInstance.Msg("Settings can be configured in UserData\\MelonPreferences.cfg or with UI Expansion Kit");
+            LoggerInstance.Msg($"[Ctrl + ScrollWheel] -> {(disableCTRLZoom.Value ? "Function Disabled" : "Increase or decrease field of view")}");
+            LoggerInstance.Msg("[Ctrl + ClickMiddleMouse] -> Reset field of view");
             zKey = Utils.GetParseZoomKeybind();
-            if (enableZoom.Value) MelonLogger.Msg($"[{zoomKeybind.Value}] -> Zoom");
+            if (enableZoom.Value) LoggerInstance.Msg($"[{zoomKeybind.Value}] -> Zoom");
         }
         
 
@@ -69,10 +77,12 @@ namespace NotOptifine
         internal void LoopEveryFrame_CuzThatsWhatOnUpdateMeans_ForVRChat_NotMinecraft_ThisIsNotOptifine()
         {
             if (Utils.GetVRCPlayer() == null) return;
+            if (XRDevice.isPresent) return;
             if (!Application.isFocused && isZoomed) {
                 isZoomed = false;
                 FOV.Value = preZoom;
                 Reticle.SetActive(true);
+                HUDIcon.SetActive(true);
             }
 
             // FOV Up
@@ -90,18 +100,22 @@ namespace NotOptifine
                 isZoomed = true;
                 preZoom = FOV.Value;
                 FOV.Value /= zoomMultiplier.Value;
-                if (hideReticleWhileZoomed.Value) Reticle.SetActive(false);
+                if (hideReticleWhileZoomed.Value) {
+                    Reticle.SetActive(false);
+                    HUDIcon.SetActive(false);
+                }
             }
             else if (Utils.GetKeyUp(zKey) && enableZoom.Value && isZoomed) {
                 isZoomed = false;
                 FOV.Value = preZoom;
                 Reticle.SetActive(true);
+                HUDIcon.SetActive(true);
             }
 
             // Log FOV change
             if (!disableCTRLZoom.Value) {
                 if ((Utils.GetKeyUp(KeyCode.LeftControl) || Utils.GetKeyUp(KeyCode.RightControl)) && !isZoomed && lastFOV != FOV.Value) {
-                    MelonLogger.Msg($"FOV Changed: {FOV.Value}");
+                    LoggerInstance.Msg($"FOV Changed: {FOV.Value}");
                     lastFOV = FOV.Value;
                 }
             }
