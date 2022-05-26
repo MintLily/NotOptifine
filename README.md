@@ -6,8 +6,8 @@ Need to install MelonLoader?<br>
 Click [this link](https://melonwiki.xyz/) to get started!
 
 ### Prerequisites
-MelonLoader: v0.5.2 (Alpha)<br>
-Game: VRChat build 1160+
+MelonLoader: v0.5.4 (Alpha)<br>
+Game: VRChat build 1201+
 
 ### MelonPreferences (Default Values)
 ```ini
@@ -27,6 +27,9 @@ disableCTRLZoom = false
 
 
 # Change Log (since Lily's edits)
+### v1.4.41
+- Fix for build 1201
+
 ### v1.4.0
 - Added HUDVoiceIcon toggle to OnZoom
 
