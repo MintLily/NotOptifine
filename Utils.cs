@@ -10,7 +10,7 @@ namespace NotOptifine
 
 		public static KeyCode GetParseZoomKeybind()
 		{
-			string yes = Main.zoomKeybind.Value;
+			string yes = Main.ZoomKeybind.Value;
 			if (string.IsNullOrWhiteSpace(yes)) yes = "LeftAlt";
 
 			if (yes.Length == 1) yes = yes.ToUpper();
